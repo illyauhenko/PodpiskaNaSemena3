@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common\PodpiskaNaSemena3.Common.Common.csproj" />
+    <ProjectReference Include="..\..\Domain\Domain\PodpiskaNaSemena3.Domain.Domain.csproj" />
+    <ProjectReference Include="..\Models\PodpiskaNaSemena3.Application.Models.csproj" />
+    <ProjectReference Include="..\..\Domain\Repositories.Abstractions\PodpiskaNaSemena3.Domain.Repositories.Abstractions.csproj" />
+  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
+		<PackageReference Include="MassTransit" Version="8.3.1" />
+		<PackageReference Include="Otus.QueueDto" Version="1.0.5.2" />
+	</ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
