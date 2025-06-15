@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PodpiskaNaSemena.Domain.Entities.Base.Entity&lt;TId&gt;">
+    <Position X="11.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAAAAiA=</HashCode>
+      <FileName>Entities\Base\Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PodpiskaNaSemena.Domain.Entities.Payment">
+    <Position X="14.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAABEMAEAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Payment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PodpiskaNaSemena.Domain.Entities.Review">
+    <Position X="16.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAACAAAAgAAAAAAAEAAAAAgAAAAAA=</HashCode>
+      <FileName>Entities\Review.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PodpiskaNaSemena.Domain.Entities.Seed">
+    <Position X="9.75" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAQAgAAAAAAAAAAQAAAAAAAAAEAAEAAQAAAA=</HashCode>
+      <FileName>Entities\Seed .cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PodpiskaNaSemena.Domain.Entities.Subscription">
+    <Position X="12.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEQAAAAAAAEIAAAAggAAAAAAAAAAAEgEAAAAA=</HashCode>
+      <FileName>Entities\Subscription .cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PodpiskaNaSemena.Domain.Entities.User">
+    <Position X="7" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAAAAAASAAAAAAAAAAAAAAEAAEAAQAAAA=</HashCode>
+      <FileName>Entities\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
