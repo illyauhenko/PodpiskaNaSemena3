@@ -1,11 +1,15 @@
 ﻿using PodpiskaNaSemena.Domain.ValueObjects.Base;
 using PodpiskaNaSemena.Domain.ValueObjects.Exceptions;
 
-public sealed class CommentValidator : IValidator<string>
+namespace PodpiskaNaSemena.Domain.ValueObjects.Validators
 {
-    public void Validate(string value)
+
+    public sealed class CommentValidator : IValidator<string>
     {
-        if (value.Length > 1000)
-            throw new ValidationException("Комментарий не должен превышать 1000 символов");
+        public void Validate(string value)
+        {
+            if (value.Length > 1000)
+                throw new ValidationException("Комментарий не должен превышать 1000 символов");
+        }
     }
 }

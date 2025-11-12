@@ -1,13 +1,18 @@
 ﻿using PodpiskaNaSemena.Domain.ValueObjects.Base;
 using PodpiskaNaSemena.Domain.ValueObjects.Exceptions;
+using System.Linq;
 
-public sealed class PaymentMethodValidator : IValidator<string>
+namespace PodpiskaNaSemena.Domain.ValueObjects.Validators
 {
-    private static readonly string[] AllowedMethods = { "CreditCard", "PayPal" };
 
-    public void Validate(string value)
+    public sealed class PaymentMethodValidator : IValidator<string>
     {
-        if (!AllowedMethods.Contains(value))
-            throw new ValidationException("Недопустимый метод оплаты");
+        private static readonly string[] AllowedMethods = { "CreditCard", "PayPal" };
+
+        public void Validate(string value)
+        {
+            if (!AllowedMethods.Contains(value))
+                throw new ValidationException("Недопустимый метод оплаты");
+        }
     }
 }

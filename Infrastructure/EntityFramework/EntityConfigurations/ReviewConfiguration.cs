@@ -13,9 +13,13 @@ namespace PodpiskaNaSemena.EntityFramework.Configurations
 
             builder.HasKey(r => r.Id);
 
-            builder.Property(r => r.UserId).IsRequired();
-            builder.Property(r => r.SeedId).IsRequired();
+            builder.Property(r => r.UserId)
+                .IsRequired();
 
+            builder.Property(r => r.SeedId)
+                .IsRequired();
+
+            // маппинг Value Objects
             builder.Property(r => r.Rating)
                 .HasConversion(
                     r => r.Value,
@@ -24,12 +28,46 @@ namespace PodpiskaNaSemena.EntityFramework.Configurations
 
             builder.Property(r => r.Comment)
                 .HasConversion(
-                    c => c!.Value,
-                    c => new Comment(c))
-                .HasMaxLength(1000);
+                    c => c != null ? c.Value : null,
+                    c => c != null ? new Comment(c) : null)
+                .HasMaxLength(1000)
+                .IsRequired(false); // Комментарий не обязателен
 
             builder.Property(r => r.CreatedAt)
                 .IsRequired();
+
+            builder.Property(r => r.UpdatedAt)
+                .IsRequired(false); // Может быть null если не редактировался
+
+            //  Связь с User (многие-к-одному)
+            builder.HasOne<User>()
+                .WithMany(u => u.Reviews)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //  Связь с Seed (многие-к-одному)
+            builder.HasOne<Seed>()
+                .WithMany(s => s.Reviews)
+                .HasForeignKey(r => r.SeedId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //  Индексы для производительности
+            builder.HasIndex(r => r.UserId)
+                .HasDatabaseName("IX_Reviews_UserId");
+
+            builder.HasIndex(r => r.SeedId)
+                .HasDatabaseName("IX_Reviews_SeedId");
+
+            builder.HasIndex(r => r.Rating)
+                .HasDatabaseName("IX_Reviews_Rating");
+
+            builder.HasIndex(r => r.CreatedAt)
+                .HasDatabaseName("IX_Reviews_CreatedAt");
+
+            //  Уникальный индекс - один пользователь = один отзыв на семена
+            builder.HasIndex(r => new { r.UserId, r.SeedId })
+                .IsUnique()
+                .HasDatabaseName("IX_Reviews_User_Seed_Unique");
         }
     }
 }

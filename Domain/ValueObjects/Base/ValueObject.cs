@@ -1,4 +1,5 @@
 ﻿using PodpiskaNaSemena.Domain.ValueObjects.Exceptions;
+using System.Collections.Generic;
 
 namespace PodpiskaNaSemena.Domain.ValueObjects.Base
 {

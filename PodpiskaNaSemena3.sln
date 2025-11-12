@@ -35,13 +35,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodpiskaNaSemena3.Presentation.WebHost", "Presentation\WebHost\PodpiskaNaSemena3.Presentation.WebHost.csproj", "{F2647FC0-51FA-4096-A468-D45475A2A87D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{80FF7642-A7E4-40AE-BB50-653ADA90CE54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -89,6 +88,9 @@ Global
 		{F2647FC0-51FA-4096-A468-D45475A2A87D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2647FC0-51FA-4096-A468-D45475A2A87D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{80FF7642-A7E4-40AE-BB50-653ADA90CE54} = {73AD8F8D-02DD-4F9A-8C71-D0D07425390F}
 		{570750B1-66C6-4DFF-B5FD-1624A8094B3F} = {73AD8F8D-02DD-4F9A-8C71-D0D07425390F}
@@ -101,5 +103,8 @@ Global
 		{DEAE2D72-E351-4C8D-A05D-65191FF99F1F} = {A7E15A8A-C2A5-45E2-886A-BFF4BCB5FBD3}
 		{80BDE7A0-624B-4F42-8E27-AFEA6547EAA6} = {A7E15A8A-C2A5-45E2-886A-BFF4BCB5FBD3}
 		{F2647FC0-51FA-4096-A468-D45475A2A87D} = {1D9E0DD3-C3F4-4A2A-BED2-13EDE33D9D0B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3522733F-5DE1-4BB9-B9D1-3488B4DE4166}
 	EndGlobalSection
 EndGlobal

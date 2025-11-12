@@ -1,9 +1,10 @@
-﻿
-
-namespace PodpiskaNaSemena.Application.Models.Base
+﻿namespace PodpiskaNaSemena.Application.Models.Base
 {
-    public interface IModel<out TId> where TId : struct, IEquatable<TId>
+    /// <summary>
+    /// Базовый интерфейс для всех моделей с идентификатором
+    /// </summary>
+    public interface IModel<TId> where TId : struct
     {
-        public TId Id { get; }
+        TId Id { get; }
     }
 }

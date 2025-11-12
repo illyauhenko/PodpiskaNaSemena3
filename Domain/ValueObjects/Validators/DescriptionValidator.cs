@@ -1,11 +1,14 @@
 ﻿using PodpiskaNaSemena.Domain.ValueObjects.Base;
 using PodpiskaNaSemena.Domain.ValueObjects.Exceptions;
 
-public sealed class DescriptionValidator : IValidator<string>
+namespace PodpiskaNaSemena.Domain.ValueObjects.Validators
 {
-    public void Validate(string value)
+    public sealed class DescriptionValidator : IValidator<string>
     {
-        if (value.Length > 500)
-            throw new ValidationException("Описание не должно превышать 500 символов");
+        public void Validate(string value)
+        {
+            if (value.Length > 500)
+                throw new ValidationException("Описание не должно превышать 500 символов");
+        }
     }
 }

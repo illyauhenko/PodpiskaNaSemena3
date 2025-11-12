@@ -12,7 +12,7 @@ using PodpiskaNaSemena3.Infrastructure.EntityFramework;
 namespace PodpiskaNaSemena3.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250609213955_InitialCreate")]
+    [Migration("20251104185404_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -36,6 +36,10 @@ namespace PodpiskaNaSemena3.Infrastructure.EntityFramework.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("FailureReason")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -46,15 +50,27 @@ namespace PodpiskaNaSemena3.Infrastructure.EntityFramework.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<int>("SubscriptionId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PaymentDate")
+                        .HasDatabaseName("IX_Payments_PaymentDate");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("IX_Payments_Status");
+
                     b.HasIndex("SubscriptionId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_Payments_SubscriptionId");
+
+                    b.HasIndex("Status", "PaymentDate")
+                        .HasDatabaseName("IX_Payments_Status_Date")
+                        .HasFilter("\"Status\" = 'Pending'");
 
                     b.ToTable("Payments", (string)null);
                 });
@@ -80,14 +96,29 @@ namespace PodpiskaNaSemena3.Infrastructure.EntityFramework.Migrations
                     b.Property<int>("SeedId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SeedId");
+                    b.HasIndex("CreatedAt")
+                        .HasDatabaseName("IX_Reviews_CreatedAt");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("Rating")
+                        .HasDatabaseName("IX_Reviews_Rating");
+
+                    b.HasIndex("SeedId")
+                        .HasDatabaseName("IX_Reviews_SeedId");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_Reviews_UserId");
+
+                    b.HasIndex("UserId", "SeedId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Reviews_User_Seed_Unique");
 
                     b.ToTable("Reviews", (string)null);
                 });
@@ -105,6 +136,11 @@ namespace PodpiskaNaSemena3.Infrastructure.EntityFramework.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<bool>("IsAvailable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -114,6 +150,19 @@ namespace PodpiskaNaSemena3.Infrastructure.EntityFramework.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IsAvailable")
+                        .HasDatabaseName("IX_Seeds_IsAvailable")
+                        .HasFilter("\"IsAvailable\" = true");
+
+                    b.HasIndex("Name")
+                        .HasDatabaseName("IX_Seeds_Name");
+
+                    b.HasIndex("Price")
+                        .HasDatabaseName("IX_Seeds_Price");
+
+                    b.HasIndex("IsAvailable", "Price")
+                        .HasDatabaseName("IX_Seeds_Available_Price");
 
                     b.ToTable("Seeds", (string)null);
                 });
@@ -137,16 +186,26 @@ namespace PodpiskaNaSemena3.Infrastructure.EntityFramework.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SeedId");
+                    b.HasIndex("EndDate")
+                        .HasDatabaseName("IX_Subscriptions_EndDate");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SeedId")
+                        .HasDatabaseName("IX_Subscriptions_SeedId");
+
+                    b.HasIndex("StartDate")
+                        .HasDatabaseName("IX_Subscriptions_StartDate");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("IX_Subscriptions_Status");
+
+                    b.HasIndex("Status", "EndDate")
+                        .HasDatabaseName("IX_Subscriptions_Status_EndDate")
+                        .HasFilter("\"Status\" = 'Active'");
 
                     b.ToTable("Subscriptions", (string)null);
                 });
@@ -167,6 +226,11 @@ namespace PodpiskaNaSemena3.Infrastructure.EntityFramework.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<bool>("IsAdmin")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -174,7 +238,33 @@ namespace PodpiskaNaSemena3.Infrastructure.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Users_Email");
+
+                    b.HasIndex("IsAdmin")
+                        .HasDatabaseName("IX_Users_IsAdmin")
+                        .HasFilter("\"IsAdmin\" = true");
+
+                    b.HasIndex("Username")
+                        .HasDatabaseName("IX_Users_Username");
+
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("UserSubscriptions", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SubscriptionId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId", "SubscriptionId");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("UserSubscriptions", (string)null);
                 });
 
             modelBuilder.Entity("PodpiskaNaSemena.Domain.Entities.Payment", b =>
@@ -182,8 +272,7 @@ namespace PodpiskaNaSemena3.Infrastructure.EntityFramework.Migrations
                     b.HasOne("PodpiskaNaSemena.Domain.Entities.Subscription", null)
                         .WithOne("Payment")
                         .HasForeignKey("PodpiskaNaSemena.Domain.Entities.Payment", "SubscriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PodpiskaNaSemena.Domain.Entities.Review", b =>
@@ -206,11 +295,20 @@ namespace PodpiskaNaSemena3.Infrastructure.EntityFramework.Migrations
                     b.HasOne("PodpiskaNaSemena.Domain.Entities.Seed", null)
                         .WithMany("Subscriptions")
                         .HasForeignKey("SeedId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UserSubscriptions", b =>
+                {
+                    b.HasOne("PodpiskaNaSemena.Domain.Entities.Subscription", null)
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PodpiskaNaSemena.Domain.Entities.User", null)
-                        .WithMany("Subscriptions")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -231,8 +329,6 @@ namespace PodpiskaNaSemena3.Infrastructure.EntityFramework.Migrations
             modelBuilder.Entity("PodpiskaNaSemena.Domain.Entities.User", b =>
                 {
                     b.Navigation("Reviews");
-
-                    b.Navigation("Subscriptions");
                 });
 #pragma warning restore 612, 618
         }

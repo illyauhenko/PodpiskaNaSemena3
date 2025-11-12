@@ -13,8 +13,9 @@ namespace PodpiskaNaSemena.EntityFramework.Configurations
 
             builder.HasKey(s => s.Id);
 
-            builder.Property(s => s.UserId).IsRequired();
-            builder.Property(s => s.SeedId).IsRequired();
+            // связь через join таблицу
+            builder.Property(s => s.SeedId)
+                .IsRequired();
 
             builder.Property(s => s.StartDate)
                 .IsRequired();
@@ -26,11 +27,39 @@ namespace PodpiskaNaSemena.EntityFramework.Configurations
                 .IsRequired()
                 .HasConversion(
                     s => s.ToString(),
-                    s => (SubscriptionStatus)Enum.Parse(typeof(SubscriptionStatus), s));
+                    s => (SubscriptionStatus)Enum.Parse(typeof(SubscriptionStatus), s))
+                .HasMaxLength(20); // Ограничение для enum
 
+            //   связь с Payment (один-к-одному)
             builder.HasOne(s => s.Payment)
                 .WithOne()
-                .HasForeignKey<Payment>(p => p.SubscriptionId);
+                .HasForeignKey<Payment>(p => p.SubscriptionId)
+                .IsRequired(false) // Payment может быть null (еще не оплачено)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //  Связь с Seed (многие-к-одному)
+            builder.HasOne<Seed>()
+                .WithMany(s => s.Subscriptions)
+                .HasForeignKey(s => s.SeedId)
+                .OnDelete(DeleteBehavior.Restrict); // Не удалять Seed если есть подписки
+
+            //  Индексы для производительности
+            builder.HasIndex(s => s.SeedId)
+                .HasDatabaseName("IX_Subscriptions_SeedId");
+
+            builder.HasIndex(s => s.Status)
+                .HasDatabaseName("IX_Subscriptions_Status");
+
+            builder.HasIndex(s => s.StartDate)
+                .HasDatabaseName("IX_Subscriptions_StartDate");
+
+            builder.HasIndex(s => s.EndDate)
+                .HasDatabaseName("IX_Subscriptions_EndDate");
+
+            //  Составной индекс для поиска активных подписок
+            builder.HasIndex(s => new { s.Status, s.EndDate })
+                .HasDatabaseName("IX_Subscriptions_Status_EndDate")
+                .HasFilter("\"Status\" = 'Active'"); // Только активные подписки
         }
     }
 }

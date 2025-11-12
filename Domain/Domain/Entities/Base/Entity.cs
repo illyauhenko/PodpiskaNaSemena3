@@ -1,4 +1,7 @@
-﻿namespace PodpiskaNaSemena.Domain.Entities.Base
+﻿using System;
+using System.Linq;
+
+namespace PodpiskaNaSemena.Domain.Entities.Base
 {
     /// <summary>
     /// Базовая сущность системы с идентификатором типа TId.

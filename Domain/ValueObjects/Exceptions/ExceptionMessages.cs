@@ -1,5 +1,4 @@
 ﻿
-
 namespace PodpiskaNaSemena.Domain.ValueObjects.Exceptions
 {
     public static class ExceptionMessages

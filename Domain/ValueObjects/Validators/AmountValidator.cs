@@ -1,11 +1,15 @@
 ﻿using PodpiskaNaSemena.Domain.ValueObjects.Base;
 using PodpiskaNaSemena.Domain.ValueObjects.Exceptions;
 
-public sealed class AmountValidator : IValidator<decimal>
+namespace PodpiskaNaSemena.Domain.ValueObjects.Validators
 {
-    public void Validate(decimal value)
+
+    public sealed class AmountValidator : IValidator<decimal>
     {
-        if (value <= 0)
-            throw new ValidationException("Сумма платежа должна быть положительной");
+        public void Validate(decimal value)
+        {
+            if (value <= 0)
+                throw new ValidationException("Сумма платежа должна быть положительной");
+        }
     }
 }

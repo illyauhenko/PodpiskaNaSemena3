@@ -30,13 +30,49 @@ namespace PodpiskaNaSemena.EntityFramework.Configurations
             builder.Property(u => u.CreatedAt)
                 .IsRequired();
 
-            builder.HasMany(u => u.Subscriptions)
-                .WithOne()
-                .HasForeignKey(s => s.UserId);
+            builder.Property(u => u.IsAdmin)
+                .IsRequired()
+                .HasDefaultValue(false); // По умолчанию не админ
 
+         
+            builder.HasMany(u => u.Subscriptions)
+                .WithMany(s => s.Users)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserSubscriptions",
+                    j => j
+                        .HasOne<Subscription>()
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    j => j
+                        .HasOne<User>()
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    j =>
+                    {
+                        j.HasKey("UserId", "SubscriptionId");
+                        j.HasIndex("SubscriptionId");
+                        j.ToTable("UserSubscriptions");
+                    });
+
+            // Связь с отзывами (один-ко-многим)
             builder.HasMany(u => u.Reviews)
                 .WithOne()
-                .HasForeignKey(r => r.UserId);
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Индексы для производительности
+            builder.HasIndex(u => u.Email)
+                .IsUnique()
+                .HasDatabaseName("IX_Users_Email");
+
+            builder.HasIndex(u => u.Username)
+                .HasDatabaseName("IX_Users_Username");
+
+            builder.HasIndex(u => u.IsAdmin)
+                .HasDatabaseName("IX_Users_IsAdmin")
+                .HasFilter("\"IsAdmin\" = true"); // Только для админов
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-namespace PodpiskaNaSemena.Domain.ValueObjects.Base
+﻿namespace PodpiskaNaSemena.Domain.ValueObjects.Base
 {
     /// <summary>
     /// Defines a method that implements the validation of the object.
